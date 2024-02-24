@@ -1,0 +1,31 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: quickstart
+spec:
+  version: 8.12.2
+  http:
+    service:
+      spec:
+        type: LoadBalancer
+  volumeClaimDeletePolicy: DeleteOnScaledownOnly
+#                                                # The possible values are DeleteOnScaledownAndClusterDeletion and DeleteOnScaledownOnly.
+#						 # By default DeleteOnScaledownAndClusterDeletion.
+#                                                # With default vaule or no values all PersistentVolumeClaims are deleted together with the Elasticsearch cluster.
+#						 # DeleteOnScaledownOnly keeps the PersistentVolumeClaims when deleting the Elasticsearch cluster.
+#						 # If you recreate a deleted cluster with the same name and node sets as before, the existing PersistentVolumeClaims will be adopted by the new cluster.
+  nodeSets:
+  - name: default
+    count: 1
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
+      spec:
+        accessModes:
+        - ReadWriteMany
+        resources:
+          requests:
+            storage: 5Gi
+        storageClassName: srilabstorageclass
+    config:
+      node.store.allow_mmap: false
