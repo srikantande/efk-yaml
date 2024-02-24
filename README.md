@@ -2,8 +2,9 @@
 Elastic FluentD Kibana -- 
 
 Execute the following in numbering sequence:
+
 00SriLab-crds.yaml
-01SriLab-ECK-operator.yaml
+01SriLab-ECK-operator.yaml \n
 02StorageClasssrilab.yaml
 03Srilab-elasticSecret.yaml
 04SriLab-Elasticsearch.yaml
